@@ -1,0 +1,5 @@
+.vscode
+
+aws/config
+aws/credentials
+ssh/*
