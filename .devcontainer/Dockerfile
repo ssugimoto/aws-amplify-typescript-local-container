@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-14
+FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install --no-install-recommends java-common zip \
@@ -14,5 +14,17 @@ RUN apt-get update && apt-get -y install --no-install-recommends java-common zip
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 ENV DEBIAN_FRONTEND=dialog
+
+ENV NVM_DIR /usr/local/share/nvm
+ENV NODE_VERSION 16.15.1
+
+# Install nvm with node and npm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
+RUN curl -o- https://get.volta.sh | bash 
 
 WORKDIR /workspaces
