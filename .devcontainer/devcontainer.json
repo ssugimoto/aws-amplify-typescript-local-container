@@ -42,13 +42,13 @@
 	"forwardPorts": [3000,20002],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install -g @aws-amplify/cli@7.5.4",
+	"postCreateCommand": "npm install -g @aws-amplify/cli@8.5.1",
 
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "node"
 	
     // docker container name (Identify Dev Containers)
 	"runArgs": [
-        "--name=vue-dev_container"
+        "--name=dev_container"
     ]
 }
