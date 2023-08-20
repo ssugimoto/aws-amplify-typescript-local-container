@@ -1,54 +1,57 @@
 {
-	"name": "vue amplify",
-
-	"dockerFile": "Dockerfile",
-
-	// Set *default* container specific settings.json values on container create.
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
-	},
-
-	// Add the IDs of extensions you want installed when the container is created.
-	// Git Extension Pack => "donjayamanne.git-extension-pack"
-	// GraphQL => "graphql.vscode-graphql"
-	// GraphQL for VSCode => kumar-harsh.graphql-for-vscode
-	"extensions": [
-		"dbaeumer.vscode-eslint",
-		"mhutchie.git-graph",
-		"eamodio.gitlens"
-		
-	],
-
-	// Mount ~/.aws directory for AWS Amplify CLI and AWS CLI access
-	// Mount ~/.ssh directory for Git Repository GitHub, GitLab ...
-	//"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,type=bind,consistency=cached",
-	//"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
-	"mounts": [
-		"source=${localWorkspaceFolder}/aws,target=/root/.aws,type=bind,consistency=cached",
-		"source=${localWorkspaceFolder}/ssh,target=/root/.ssh,type=bind,consistency=cached",
-	],
-
-	// Use in-container folder (not mounted host directory) as a workspace to speeeeeeed-up the `npx create-react-app` command. See https://github.com/toricls/aws-amplify-sns-workshop-in-vscode/pull/3.
-	// {localWorkspaceFolder} is open folder host path.
-	"workspaceMount": "source=${localWorkspaceFolder},target=/hostdir,type=bind,consistency=cached",
-	"workspaceFolder": "/workspaces",
-	"containerEnv": { 
-		"MOUNTED_HOST_DIR": "${localWorkspaceFolder}",
-		"MOUNTED_HOST_DIR_PATH_IN_CONTAINER": "/hostdir"
-	},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// npm , amplify mock api , 62224 DynamoDB
-	"forwardPorts": [3000,20002],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "npm install -g @aws-amplify/cli@8.5.1",
-
-	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	// "remoteUser": "node"
-	
-    // docker container name (Identify Dev Containers)
-	"runArgs": [
-        "--name=dev_container"
-    ]
+  "name": "dev-container101",
+  "dockerFile": "Dockerfile",
+  // Add the IDs of extensions you want installed when the container is created.
+  // Git Extension Pack => "donjayamanne.git-extension-pack"
+  // GraphQL => "graphql.vscode-graphql"
+  // GraphQL for VSCode => kumar-harsh.graphql-for-vscode
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shellIntegration.enabled": true
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "mhutchie.git-graph",
+        "eamodio.gitlens"
+      ]
+    }
+  },
+  // Mount ~/.aws directory for AWS Amplify CLI and AWS CLI access
+  // Mount ~/.ssh directory for Git Repository GitHub, GitLab ...
+  //"source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,type=bind,consistency=cached",
+  //"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
+  // remoteUser: "root" の場合
+  // "source=${localWorkspaceFolder}/aws,target=/root/.aws,type=bind,consistency=cached",
+  // "source=${localWorkspaceFolder}/ssh,target=/root/.ssh,type=bind,consistency=cached",
+  "mounts": [
+    "source=${localWorkspaceFolder}/aws,target=/home/node/.aws,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder}/ssh,target=/home/node/.ssh,type=bind,consistency=cached",
+  ],
+  // Use in-container folder (not mounted host directory) as a workspace to speeeeeeed-up the `npx create-react-app` command. See https://github.com/toricls/aws-amplify-sns-workshop-in-vscode/pull/3.
+  // {localWorkspaceFolder} is open folder host path.
+  "workspaceMount": "source=${localWorkspaceFolder},target=/hostdir,type=bind,consistency=cached",
+  "workspaceFolder": "/workspaces",
+  "containerEnv": {
+    "MOUNTED_HOST_DIR": "${localWorkspaceFolder}",
+    "MOUNTED_HOST_DIR_PATH_IN_CONTAINER": "/hostdir"
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // npm , amplify mock api , 62224 DynamoDB
+  "forwardPorts": [
+    3000,
+    20002
+  ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // RUN su node -c "npm install -g "
+  // "postCreateCommand": "npm install --global @aws-amplify/cli@12.1.1 --unsafe-perm=true",
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // See https://github.com/microsoft/vscode-remote-release/issues/7307
+  "remoteUser": "node",
+  // "remoteUser": "root",
+  // docker container name (Identify Dev Containers)
+  "runArgs": [
+    "--name=dev_container_101"
+  ]
 }
