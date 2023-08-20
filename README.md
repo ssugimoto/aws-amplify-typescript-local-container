@@ -23,6 +23,15 @@ processors=8 # Makes the WSL 2 VM use two virtual processors ,max 80%
 ```
 - 設定したらDocker Desktopを再起動するか、OSを再起動する
 
+
+## コンテナ内のユーザー
+
+- 以前は、root でしたが、dockerベースイメージ変更され、 node ユーザー がデフォルトになっているため、nodeユーザーを使うようにしています
+- devcontainer.json 内の「"remoteUser": "node"」を root にすると、rootになります
+- remoteUserをrootにする場合
+     - devcontainer.json 内のmountsをrootに合わせて target ディレクトリを変更します（ /home/node/  -> /root/ ）
+     - Dockerfile での RUN を su node をやめて、 root実行されるように変更します（  RUN su node コマンド ->  RUN コマンド）
+
 ## VSCode
 - install Visual Studio Code
     - https://code.visualstudio.com/download
@@ -32,11 +41,13 @@ processors=8 # Makes the WSL 2 VM use two virtual processors ,max 80%
     - `Docker` (ms-azuretools.vscode-docker)
     - Git操作系（ `Git Lens` , `Git Graph`等）
 
+### VS Code Remote Development
+
 ### リモートコンテナを使う
 1. このリポジトリをGit clone または zipダウンロードする
 1. VSCodeから File -> OpenFolder -> this project folder.  `.devcontainer` があるフォルダを開く
     ```
-        C:\xxx\amplify-local-develop-container
+        C:\xxx\aws-amplify-typescript-local-container
             │
             ├─.devcontainer
             │      devcontainer.json
@@ -54,6 +65,9 @@ processors=8 # Makes the WSL 2 VM use two virtual processors ,max 80%
                     known_hosts        
 1. 初回であればコンテナビルドが自動実行される
     - リビルドするとコンテナ内のファイルが消える（なくなる）ので注意
+
+- 上記の 手順で単にエクスプローラー相当で開かれる場合は、VS Code メニュー等で「Reopen In Container」で開く
+
 
 #### リモートコンテナ内の説明
 - VS Codeの拡張機能のremote explorer で、「Open Folder In container」でVSCodeをIDEにしてファイルの編集ができる 
@@ -126,7 +140,8 @@ processors=8 # Makes the WSL 2 VM use two virtual processors ,max 80%
 #### リモートコンテナ系
 - [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl#:~:text=The%20Remote%20%2D%20WSL%20extension%20lets,as%20you%20would%20from%20Windows.)
-
+- [VS Code Remote Development](https://code.visualstudio.com/docs/remote/remote-overview)
+ 
 #### Amplify 系
 - [AWS Amplify API]
 - [AppSync Utils]
